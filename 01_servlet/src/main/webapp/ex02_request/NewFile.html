@@ -15,18 +15,40 @@
   <hr>
   
   <!-- 2. location.href 속성 요청하기 -->
-  <div>
-    <span>james</span>
+  <div data-name="james" data-age="40">
     <button id="btn">요청하기</button>
-    <span>40</span>
   </div>
   <script>
     $('#btn').click(function(){
-      var name = $(this).prev().text();
-      var age = $(this).next().text();
+      var name = $(this).closest('div').data('name');
+      var age = $(this).closest('div').data('age');
       location.href = '/servlet/request?name=' + name + '&age=' + age;
     })
   </script>
+  
+  <hr>
+  
+  <!-- 3. <form> 태그로 요청하기(서브밋) -->
+  <div>
+    <form id="frm" method="get" action="/servlet/request">
+      <div>
+        <label for="name">이름</label>
+        <input type="text" id="name" name="name">  <!-- name 속성이 요청 파라미터로 인식된다. -->
+      </div>                                       <!-- 1. name 속성이 없으면 요청 파라미터는 null 값으로 인식된다. -->
+      <div>                                        <!-- 2. 입력이 없으면(value 속성이 없으면) 요청 파라미터는 빈 문자열("")로 인식된다. -->
+        <label for="age">나이</label>
+        <input type="text" id="age" name="age">    <!-- name 속성이 요청 파라미터로 인식된다. -->
+      </div>
+      <div>
+        <button type="submit">전송하기</button>
+        <button type="reset">입력초기화</button>
+      </div>
+    </form>
+  </div>
+  
+  
+  
+  
   
 
 </body>
