@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <!-- 1. <a> 태그 요청하기 -->
+  <div>
+    <a href="/servlet/request?name=alice&age=30">요청하기</a>
+  </div>
+  
+  <hr>
+  
+  <!-- 2. location.href 속성 요청하기 -->
+  <div>
+    <span>james</span>
+    <button id="btn">요청하기</button>
+    <span>40</span>
+  </div>
+  <script>
+    $('#btn').click(function(){
+      var name = $(this).prev().text();
+      var age = $(this).next().text();
+      location.href = '/servlet/request?name=' + name + '&age=' + age;
+    })
+  </script>
+  
+
+</body>
+</html>
