@@ -45,6 +45,18 @@
       </div>
     </form>
   </div>
+  <script>
+    $('#frm').submit(function(event) {
+      // 숫자가 아니면 true를 반환하는 정규식
+      var regNaN = /\D/;  // var regNaN =/[^0-9]/
+      var age = $('#age').val();
+      if(age.length === 0 || regNaN.test(age)){
+        alert('나이는 정수만 입력할 수 있습니다.');
+        event.preventDefault();
+        return;
+      }
+    })
+  </script>
   
   
   
