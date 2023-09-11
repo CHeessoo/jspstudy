@@ -59,6 +59,34 @@
   </script>
   
   
+  <hr>
+  
+  
+  <!-- 4. 동일한 파라미터를 2개 이상 요청하기 -->
+  <div>
+    <form method="post" action="/servlet/request" >
+      <div>
+        <select name="tel">    <!-- <select>태그는 name속성을 select에만 둔다. (<option>에 두지 않음) -->
+          <option>010</option> <!-- <option value="010">010</option> value와 text content값이 같으면 value가 생략 가능하다.(text Content가 value로 전송됨) -->
+          <option>02</option>  <!-- <option value="02">02</option> -->
+          <option>031</option> <!-- <option value="031"/> 도 가능함 -->
+        </select>
+        <input text="text" name="tel"> <!-- input은 사용자가 입력한 값이 value가 된다. -->
+        <input text="text" name="tel"> <!-- 서로 다른 태그여도 같은 name을 줄 수 있다. 동일한 파라미터로 인식한다. -->
+      </div>
+      <div>
+        <input type="checkbox"  name="hobbies"  value="travel" id="travel">
+        <label for="travle">여행</labelt>
+        <input type="checkbox"  name="hobbies"  value="game" id="game">
+        <label for="game">게임</labelt>
+        <input type="checkbox"  name="hobbies"  value="golf" id="golf">
+        <label for="golf">골프</labelt>
+      </div>
+      <div>
+        <button type="submit">전송</button>
+      </div>
+    </form>
+  </div>
   
   
   
