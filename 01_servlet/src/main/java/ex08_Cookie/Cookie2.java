@@ -45,12 +45,12 @@ public class Cookie2 extends HttpServlet {
 	      // 쿠키 유지 시간
 	      int expire = cookies[i].getMaxAge();
 	      
-	      System.out.println(name + "," + value + "," + path + "," + expire); // age는 경로가 달라졌기 때문에 확인 안 되는게 맞다.
+	      System.out.println(name + "," + value + "," + path + "," + expire); // age는 경로가 달라졌기 때문에 확인 안 되는게 맞음
 	    }
 	  }
 	  
 	  // 쿠키 삭제하기 (같은 이름의 쿠키를 만든 뒤 쿠키 유지시간을 0으로 설정하고 저장한다.(덮어쓰기한다.))
-	  Cookie cookie = new Cookie("name", "값은아무의미가없다");  // 값은 빈문자열 주면 됨
+	  Cookie cookie = new Cookie("name", "값은아무의미가없다");  // 삭제시 쿠키의 값은 아무 의미가 없기 때문에 빈문자열을 주면 된다.(공백불가)
 	  cookie.setMaxAge(0);
 	  response.addCookie(cookie);
 	  

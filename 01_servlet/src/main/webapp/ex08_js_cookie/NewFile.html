@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+<script>
+  // do_not_open_today 쿠키값 확인
+  var popupCookie = Cookies.get('do_not_open_today');  // 해당 쿠키가 없으면 undefined
+  
+  if(popupCookie !== 'true') {  // 쿠키는 문자열로 저장하기 때문에 문자열로 비교
+    window.open('popup.html', '', 'width=300,height=500,top=100,left=100');
+  }
+  
+</script>
+</head>
+<body>
+
+  <div>
+    화면
+  </div>
+
+</body>
+</html>
