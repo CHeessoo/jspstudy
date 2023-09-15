@@ -1,3 +1,5 @@
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
 <%@page import="ex04_el.Person"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -61,12 +63,91 @@
     Person person = new Person();
     person.setName("홍길동");
     person.setAge(30);
-    pageContext.setAttribute("person", person);
+    pageContext.setAttribute("person", person);  // pageContext 영역에 person을 넣음
   %>
-  <div>이름 : &{person.name}</div>  <%-- person.getName(), EL은 person.name을 person.getName() 방식으로 호출해서 보여준다. --%>
-  <div>나이 : &{person.age}</div>   <%-- person.getAge(),  EL은 person.age를 person.getAge() 방식으로 호출해서 보여준다. --%>
+  <div>이름 : ${person.name}</div>  <%-- person.getName(), EL은 person.name을 person.getName() 방식으로 호출해서 보여준다. --%>
+  <div>나이 : ${person.age}</div>   <%-- person.getAge(),  EL은 person.age를 person.getAge() 방식으로 호출해서 보여준다. --%>
+  
+  <%-- Map 사용하기 --%>
+  <%
+    // Map을 만든 뒤 EL 사용이 가능한 binding 영역에 넣는다.
+    Map<String, Object> book = new HashMap<>();
+    book.put("title", "소나기");
+    book.put("price", 10000); 
+    pageContext.setAttribute("book", book);  // pageContext 영역에 book을 넣음
+  %>
+  <div>제목 : ${book.title}</div>  <%-- Map과 객체를 생성해서 사용하는 두 방법 모두 동일하다. (둘 중 하나 선택해서 사용) --%>
+  <div>가격 : ${book.price}</div>
+  
+  <%--
+    EL 연산자
+    
+    1. 산술 연산
+      1) +
+      2) -
+      3) *
+      4) / 또는 div
+      5) % 또는 mod
+      
+    2. 크기 비교
+      1) >  또는 gt
+      2) <  또는 lt 
+      3) >= 또는 ge 
+      4) <= 또는 le 
+      5) == 또는 eq
+      6) != 또는 ne
+      
+    3. 논리 연산
+      1) 논리 AND : && 또는 and
+      2) 논리 OR  : || 또는 or
+      3) 논리 NOT : !  또는 not 
+      
+    4. 조건 연산
+      (조건식) ? ture일 때 : false일 때 
+  --%>
+  <%
+    pageContext.setAttribute("a", 5);  // 속성에 저장되는건 모두 Object타입이다.
+    pageContext.setAttribute("b", 2);
+  %>
+  <%-- 산술연산 확인 --%>
+  <div>${a + b}</div>
+  <div>${a - b}</div>
+  <div>${a * b}</div>
+  <div>${a / b}</div>
+  <div>${a div b}</div>
+  <div>${a % b}</div>
+  <div>${a mod b}</div>
+
+  <%-- 크기 비교 확인 --%>
+  <div>${a gt b}</div>  <%-- ${a > b} --%>
+  <div>${a lt b}</div>  <%-- ${a > b} --%>
+  <div>${a ge b}</div>  <%-- ${a >= b} --%>
+  <div>${a le b}</div>  <%-- ${a <= b} --%>
+  <div>${a eq b}</div>  <%-- ${a == b} --%>
+  <div>${a ne b}</div>  <%-- ${a != b} --%>
+
+  <%-- 논리 연산 확인 --%>
+  <div>${a eq 5 && b eq 2}</div>
+  <div>${a eq 5 and b eq 2}</div>
+  <div>${a eq 5 || b eq 2}</div>
+  <div>${a eq 5 or b eq 2}</div>
+  <div>${!(a eq 5)}</div>
+  <div>${not(a eq 5)}</div>
+  
+  <%-- 조건연산 확인 --%>
+  <div>${a eq b ? true : false}</div>  <%-- false --%>
   
   
+  <%--
+    request 사용 시 주의사항
+    
+    1. 속성(Attribute)을 저장한 경우
+      request.setAttribute("name", "홍길동"); --->>> ${name}        (request에 데이터를 저장할 때 대부분 사용하는 방법) 
+    
+    2. 파라미터(Parameter)를 저장한 경우
+      /ContextPath/URLMapping?name=홍길동     --->>> ${param.name}  (param: 파라미터를 받는 내장객체, 파라미터 name과 속성 name은 다르게 구분)
+    
+  --%>
 
 </body>
 </html>
