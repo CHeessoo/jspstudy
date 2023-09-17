@@ -12,14 +12,14 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class Ex01
  */
-@WebServlet("/ex01")
-public class Ex01 extends HttpServlet {
+@WebServlet("/register")
+public class Register extends HttpServlet {
   private static final long serialVersionUID = 1L;
        
   /**
    * @see HttpServlet#HttpServlet()
    */
-  public Ex01() {
+  public Register() {
     super();
     // TODO Auto-generated constructor stub
   }
