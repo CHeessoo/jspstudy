@@ -22,8 +22,7 @@
         },
         // 아직 완료 전
         error: function(jqXHR){
-          var o = JSON.parse(jqXHR.responseText);
-          alert(o.message + '(' + jqXHR.status + ')');
+          alert(jqXHR.responseText);
         }
       })
     })

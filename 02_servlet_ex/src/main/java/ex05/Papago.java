@@ -58,10 +58,10 @@ public class Papago extends HttpServlet {
       String params = "source=" + source + "&target=" + target+"&text=" + text;
       
       // URL 객체 생성과 접속 생성
-      //url = new URL(spec);
+      url = new URL(spec);
       con = (HttpURLConnection) url.openConnection();
       
-      // 요청 메소드 POST (생략할 수 없다.)
+      // 요청 메소드 POST
       con.setRequestMethod("POST");
       
       // 요청 헤더 (clientId, clientSecret)
@@ -106,13 +106,12 @@ public class Papago extends HttpServlet {
       
       /* 예외 상황의 응답 처리 (catch 블록의 응답은 $.ajax({error: function(jqXHR)})로 전달됨) */
       
-      // 응답 타입과 인코딩
-      response.setContentType("application/json; charset=UTF-8");
+      // 응답 타입과 인코딩 (예외 메시지를 text 형식으로 반환함)
+      response.setContentType("text/plain; charset=UTF-8");
       
-      // 예외 메시지 JSON
-      // {"message": "예외메시지"}
-      String message = "{\"message\": \""+e.getMessage() + "\"}";
-      
+      // 예외 메시지 Text
+      String message = e.getMessage();
+
       // 응답 출력 스트림 생성
       PrintWriter out = response.getWriter();
       
