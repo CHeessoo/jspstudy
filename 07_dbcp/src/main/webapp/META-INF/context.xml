@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Context>
+  
+  <!-- 오라클 접속 정보 -->
+  <Resource
+      auth="Container"
+      name="jdbc/oraclexe"
+      type="javax.sql.DataSource"
+      driverClassName="oracle.jdbc.OracleDriver" 
+      url="jdbc:oracle:thin:@localhost:1521:xe"
+      username="GD"
+      password="1111"
+      maxTotal="8"           
+      maxIdle="8"           
+      maxWaitMillis="-1" />  
+  
+</Context>
+
+<!-- oracle.jdbc.OracleDriver : 커넥션 풀을 관리하는 객체(OracleDriver) -->
+<!-- maxTotal                 : 동시에 사용할 수 있는 최대 커넥션 갯수(기본값 8) -->
+<!-- maxIdle                  : Connection Pool에 반납할 때 최대로 유지될 수 있는 커넥션의 갯수(기본값 8) -->
+<!-- maxTotal과 maxIdle의 값은 동일한게 이상적이다. -->
+<!-- 밀리초의 -1값            : 제한 없음 -->
