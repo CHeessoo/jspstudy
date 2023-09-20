@@ -31,6 +31,8 @@
       </div>
     </c:forEach>
   </div>
+  
+  <div>${paging}</div>
 
 </body>
 </html>
