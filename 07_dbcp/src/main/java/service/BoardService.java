@@ -10,5 +10,6 @@ public interface BoardService {
   public ActionForward getBoardByNo(HttpServletRequest request);
   public ActionForward edit(HttpServletRequest request);
   public ActionForward modify(HttpServletRequest request);
+  public ActionForward delete(HttpServletRequest request);
 
 }

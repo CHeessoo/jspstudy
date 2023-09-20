@@ -130,11 +130,33 @@ public class BoardServiceImpl implements BoardService {
     String path = null;
     if(modifyResult == 1) {
       path = request.getContextPath() + "/board/detail.do?board_no=" + board_no;
-    } else {
+    } else if(modifyResult == 0){
       path = request.getContextPath() + "/index.do";
     }
     
     // update 이후에는 redirect 한다.
+    return new ActionForward(path, true);
+  }
+  
+  @Override
+  public ActionForward delete(HttpServletRequest request) {
+    
+    // 삭제할 게시글 번호
+    Optional<String> opt = Optional.ofNullable(request.getParameter("board_no"));
+    int board_no = Integer.parseInt(opt.orElse("0"));
+    
+    // 삭제하기
+    int deleteResult = dao.delete(board_no);
+    
+    // 삭제 성공(deleteResult == 1), 삭제 실패(deleteResult == 0)
+    String path = null;
+    if(deleteResult == 1) {
+      path = request.getContextPath() + "/board/list.do";
+    } else if(deleteResult == 0) {
+      path = request.getContextPath() + "/index.do";
+    }
+    
+    // delete 이후에는 redirect 한다.
     return new ActionForward(path, true);
   }
   

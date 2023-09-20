@@ -15,18 +15,18 @@
 </style>
 <script>
 
-  $(function() {
-    fnDelete();    
+$(function(){
+  fnDelete();
+})
+
+function fnDelete(){
+  $('#delete_link').click(function(event){
+    if(!confirm('게시글을 삭제할까요?')){
+      event.preventDefault();
+      return;
+    }
   })
-  
-  function fnDelete() {
-    $('#delete_link').click(function(event) {
-      if(confirm('게시글을 삭제할까요?')){
-        event.preventDefault();
-        return;
-      }
-    })
-  }
+}
   
 </script>
 </head>

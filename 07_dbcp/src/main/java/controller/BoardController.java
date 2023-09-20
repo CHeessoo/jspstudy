@@ -74,6 +74,9 @@ public class BoardController extends HttpServlet {
 	  case "/board/modify.do":
 	    af = boardService.modify(request);
 	    break;
+    case "/board/delete.do":
+      af = boardService.delete(request);
+      break;
 	  }
 	  
 	  // 이동
