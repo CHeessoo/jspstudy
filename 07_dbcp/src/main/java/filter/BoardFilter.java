@@ -63,7 +63,7 @@ public class BoardFilter extends HttpFilter implements Filter {
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
 		
-		// 이곳에 작성되는 코드는 controller 실행 이후에 처리
+		/* 이곳에 작성되는 코드가 있다면 controller 실행 이후에 처리 */
 	}
 
 	/**
