@@ -13,6 +13,18 @@
     margin-right: 20px;
   }
 </style>
+<script>
+
+  $(function() {
+    fnDetail();
+  })
+
+  function fnDetail() {
+    $('.board').click(function() {
+      location.href = '${contextPatn}/board.detail.do?board_no=' + $(this).find('.board_no').text();
+    })    
+  }
+</script>
 </head>
 <body>
 
@@ -25,7 +37,7 @@
   <div>
     <c:forEach items="${boardList}" var="board">
       <div class="board">
-      <span>${board.board_no}</span>
+      <span class="board_no">${board.board_no}</span>
       <span>${board.title}</span>
       <span>${board.created_at}</span>
       </div>
