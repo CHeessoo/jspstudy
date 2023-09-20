@@ -49,7 +49,7 @@ public class BoardServiceImpl implements BoardService {
 
   @Override
   public ActionForward getBoardList(HttpServletRequest request) {
-    
+
     /* page, total, display 정보가 있어야 목록을 가져올 수 있다. */
     
     // 전달된 페이지 번호 (페이지 번호의 전달이 없으면 1 페이지를 연다.)
@@ -76,4 +76,21 @@ public class BoardServiceImpl implements BoardService {
     request.setAttribute("paging", pageVo.getPaging(request.getContextPath() + "/board/list.do"));
     return new ActionForward("/board/list.jsp", false);
   }
+  
+  @Override
+  public ActionForward getBoardByNo(HttpServletRequest request) {
+    
+    // 상세조회할 게시글 번호
+    Optional<String> opt = Optional.ofNullable(request.getParameter("board_no"));
+    int board_no = Integer.parseInt(opt.orElse("0"));
+    
+    // DB로부터 게시글 가져오기
+    BoardDto board = dao.getBoardByNo(board_no);
+    
+    // 게시글을 /board/detail.jsp에 전달하기 위해서 forward 처리
+    request.setAttribute("board", board);
+    return new ActionForward("/board/detail.jsp", false);
+  }
+  
+
 }

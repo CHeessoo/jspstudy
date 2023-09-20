@@ -62,6 +62,9 @@ public class BoardController extends HttpServlet {
 	  case "/board/list.do":
 	    af = boardService.getBoardList(request);
 	    break;
+	  case "/board/detail.do":
+	    af = boardService.getBoardByNo(request);
+	    break;
 	  }
 	  
 	  // 이동
