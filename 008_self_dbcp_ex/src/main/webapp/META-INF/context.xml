@@ -8,7 +8,7 @@
       name="jdbc/oraclexe"
       type="javax.sql.DataSource"
       driverClassName="oracle.jdbc.OracleDriver"
-      url="jdbc:oracle:thin:@localhost:1521:xe"
+      url="jdbc:oracle:thin:@loacalhost:1521:xe"
       username="GD"
       password="1111"
       maxTotal="8"

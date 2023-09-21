@@ -1,5 +1,5 @@
 DROP TABLE ARTICLE_T;
-CREATE TABLE ARTICLE_T (
+CREATE TABLE ARTICLE_T(
     /* 기사번호   */ ARTICLE_NO   NUMBER              NOT NULL,
     /* 제목       */ TITLE        VARCHAR2(1000 BYTE) NOT NULL,
     /* 내용       */ CONTENT      CLOB,
@@ -12,6 +12,8 @@ CREATE TABLE ARTICLE_T (
 
 DROP SEQUENCE ARTICLE_SEQ;
 CREATE SEQUENCE ARTICLE_SEQ NOCACHE;
+
+
 
 /*
 웰컴 화면으로 이동하기    /index.do
@@ -29,31 +31,3 @@ CREATE SEQUENCE ARTICLE_SEQ NOCACHE;
 2. 목록 보기에서 기사를 선택한 뒤 삭제한다.
    delete from article_t where article_no in(1, 2, 3);
 */
-
-/*
- * 목록
- *     /plusHit.do
- *       redirect : /getArticleDetail.do
- * 편집
- *     /modifyArticle.do
- *       redirect : /getArticleDetail.do
- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

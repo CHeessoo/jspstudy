@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class ActionForward {
   private String path;
   private boolean isRedirect;
+
 }

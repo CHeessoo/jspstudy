@@ -1,5 +1,8 @@
 package service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,92 +13,130 @@ import repository.ArticleDao;
 import util.PageVo;
 
 public class ArticleServiceImpl implements ArticleService {
-  
-  // 모든 서비스가 공동으로 사용하는 ArticleDao, PageVo 객체 가져오기
+
   private ArticleDao dao = ArticleDao.getDao();
   private PageVo pageVo = new PageVo();
-  
 
   @Override
-  public ActionForward addArticle(HttpServletRequest request) {
-    // 등록할 제목, 내용, 작성자
+  public ActionForward add(HttpServletRequest request) {
+    
     String title = request.getParameter("title");
     String content = request.getParameter("content");
     String editor = request.getParameter("editor");
     
-    // 제목 + 내용 + 작성자 -> ArticleDto 객체
-    // builder 패턴 이용 시 입력이 조금 더 빨라진다.
     ArticleDto dto = ArticleDto.builder()
-                          .title(title)
-                          .content(content)
-                          .editor(editor)
-                          .build();
+                      .title(title)
+                      .content(content)
+                      .editor(editor)
+                      .build();
     
-    // ArticleDto의 addArticle 메소드 호출
-    int addArticle = dao.addArticle(dto);
+    int addResult = dao.articleAdd(dto);
     
-    // 등록 성공(addArticle == 1), 등록 실패(addArticle == 0)
     String path = null;
-    if(addArticle == 1) {
-      path = request.getContextPath() + "/article/getArticleList.do";
-    } else if (addArticle == 0) {
+    if(addResult == 1) {
+      path = request.getContextPath() + "/getArticleList.do";
+    } else if(addResult == 0) {
       path = request.getContextPath() + "/index.do";
     }
     
-    // 어디로 어떻게 이동하는지 반환 (insert 수행 후에는 반드시 redirect로 이동한다.)
     return new ActionForward(path, true);
+    
   }
 
   @Override
-  public ActionForward getArticleList(HttpServletRequest request) {
+  public ActionForward list(HttpServletRequest request) {
     
-    /* page, total, display 정보가 있어야 목록을 가져올 수 있다. */
-    
-    // 전달된 페이지 번호 (페이지 번호의 전달이 없으면 1페이지를 연다.)
     Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
     int page = Integer.parseInt(opt.orElse("1"));
     
-    int total = dao.getArticleCount(); // 전체 게시글 수
-    int display = 10;
+    int total = dao.articleCount();
     
-    // PageVo의 모든 정보 계산하기
+    int display = 5;
+    
     pageVo.setPaging(page, total, display);
     
-    // 게시글 목록을 가져올 때 사용할 변수들을 Map으로 만듬
-    ㅡ
+    Map<String, Object> map = new HashMap<String, Object>();
+    map.put("begin", pageVo.getBegin());
+    map.put("end", pageVo.getEnd());
     
+    List<ArticleDto> articleList = dao.articleList(map);
     
-    return null;
+    request.setAttribute("articleList", articleList);
+    request.setAttribute("paging", pageVo.getPaging(request.getContextPath() + "/getArticleList.do"));
+    return new ActionForward("/article/list.jsp", false);
+    
   }
-
+  
   @Override
-  public ActionForward getArticleDetail(HttpServletRequest request) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public ActionForward plusHit(HttpServletRequest request) {
-    // TODO Auto-generated method stub
-    return null;
+  public ActionForward detail(HttpServletRequest request) {
+    
+    Optional<String> opt = Optional.ofNullable(request.getParameter("article_no"));
+    int article_no = Integer.parseInt(opt.orElse("0"));
+    
+    ArticleDto article = dao.articleDetail(article_no);  // SELECT
+    
+    request.setAttribute("article", article);
+    return new ActionForward("/article/detail.jsp", false);
+    
   }
 
   @Override
   public ActionForward edit(HttpServletRequest request) {
-    // TODO Auto-generated method stub
-    return null;
+    
+    Optional<String> opt = Optional.ofNullable(request.getParameter("article_no"));
+    int article_no = Integer.parseInt(opt.orElse("0"));
+    
+    ArticleDto article = dao.articleDetail(article_no);
+    
+    request.setAttribute("article", article);
+    return new ActionForward("/article/edit.jsp", false);
+    
   }
-
+  
   @Override
   public ActionForward modify(HttpServletRequest request) {
-    // TODO Auto-generated method stub
-    return null;
+    
+    String title = request.getParameter("title");
+    String content = request.getParameter("content");
+    int article_no = Integer.parseInt(request.getParameter("article_no"));
+    
+    ArticleDto dto = ArticleDto.builder()
+                    .title(title)
+                    .content(content)
+                    .article_no(article_no)
+                    .build();
+    
+    int modifyResult = dao.articleModify(dto);
+    
+    String path = null;
+    if(modifyResult == 1) {
+      path = request.getContextPath() + "/getArticleDetail.do?article_no=" + article_no;
+    } else {
+      path = request.getContextPath() + "/index.do";
+    }
+    
+    return new ActionForward(path, true);
+    
   }
-
+  
   @Override
-  public ActionForward delete(HttpServletRequest request) {
-    // TODO Auto-generated method stub
-    return null;
+  public ActionForward plusHit(HttpServletRequest request) {
+    
+    Optional<String> opt = Optional.ofNullable(request.getParameter("article_no"));
+    int article_no = Integer.parseInt(opt.orElse("0"));
+    
+    // 조회수 늘리기
+    int plusHitResult = dao.articlePlusHit(article_no);  // UPDATE
+    
+    String path = null;
+    if(plusHitResult == 1) {
+      path = request.getContextPath() + "/getArticleDetail.do?article_no=" + article_no;
+    } else if(plusHitResult == 0) {
+      path = request.getContextPath() + "/index.do";
+    }
+    
+    return new ActionForward(path, true);
   }
+  
 
 }
