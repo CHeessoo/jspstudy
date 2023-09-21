@@ -13,6 +13,8 @@ CREATE TABLE ARTICLE_T(
 DROP SEQUENCE ARTICLE_SEQ;
 CREATE SEQUENCE ARTICLE_SEQ NOCACHE;
 
+
+
 /*
 웰컴 화면으로 이동하기    /index.do
 기사 등록화면으로 가기    /writeArticle.do

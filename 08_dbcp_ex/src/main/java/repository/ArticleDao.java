@@ -3,6 +3,9 @@ package repository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -117,6 +120,66 @@ public class ArticleDao {
     return count;
     
   }
+  
+  // 게시글 목록 반환 메소드
+  public List<ArticleDto> getArticleList(Map<String, Object> map){
+    
+    // 게시글 목록 저장 List
+    List<ArticleDto> list = new ArrayList<ArticleDto>();
+    
+    try {
+      
+      // Connection Pool에서 DataSource객체를 이용해서 Connection을 하나 받아옴
+      con = dataSource.getConnection();
+      // 쿼리문 작성
+      String sql = "SELCET A.ARTICLE_NO, A.TITLE, A.CONTENT, A.EDITOR, A.HIT, A.LASTMODIFIED, A.CREATED"
+                 + "  FROM (SELECT ROW_NUMBER() OVER (ORDER BY ARTICLE_NO DESC) AS RN, ARTICLE_NO, TITLE, CONTENT, EDITOR, HIT, LASTMODIFIED, CREATED"
+                 + "          FROM ARTICLE_T) A"
+                 + " WHERE A.RN BETWEEN ? AND ?";
+      // 쿼리문 실행을 담당하는 ps 객체 생성
+      ps = con.prepareStatement(sql);
+      ps.setInt(1, (int)map.get("begin"));
+      ps.setInt(2, (int)map.get("end"));
+      rs = ps.executeQuery();
+      while(rs.next()) {
+        // rs -> ArticleDto
+        ArticleDto dto = ArticleDto.builder()
+                              .article_no(rs.getInt(1))
+                              .title(rs.getString(2))
+                              .content(rs.getString(3))
+                              .editor(rs.getString(4))
+                              .hit(rs.getInt(5))
+                              .lastmodified(rs.getDate(6))
+                              .created(rs.getDate(7))
+                              .build();
+        
+        // ArticleDto -> list 추가
+        list.add(dto);
+      }
+      
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+    
+    // 게시글 목록 반환
+    return list;
+    
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   

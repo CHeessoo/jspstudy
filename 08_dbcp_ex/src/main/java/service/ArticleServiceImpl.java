@@ -1,5 +1,7 @@
 package service;
 
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 
 import common.ActionForward;
@@ -46,7 +48,23 @@ public class ArticleServiceImpl implements ArticleService {
 
   @Override
   public ActionForward getArticleList(HttpServletRequest request) {
-    // TODO Auto-generated method stub
+    
+    /* page, total, display 정보가 있어야 목록을 가져올 수 있다. */
+    
+    // 전달된 페이지 번호 (페이지 번호의 전달이 없으면 1페이지를 연다.)
+    Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
+    int page = Integer.parseInt(opt.orElse("1"));
+    
+    int total = dao.getArticleCount(); // 전체 게시글 수
+    int display = 10;
+    
+    // PageVo의 모든 정보 계산하기
+    pageVo.setPaging(page, total, display);
+    
+    // 게시글 목록을 가져올 때 사용할 변수들을 Map으로 만듬
+    ㅡ
+    
+    
     return null;
   }
 
