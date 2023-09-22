@@ -44,6 +44,15 @@ public class MemberDao {
     return count; // 목록 개수 반환
   }
   
+  public int memberAdd(MemberDto dto) {
+    SqlSession ss = factory.openSession(false);
+    int addResult = ss.insert(NS + "memberAdd", dto);
+    if(addResult == 1) {
+      ss.commit();
+    }
+    ss.close();
+    return addResult;
+  }
   
   
 

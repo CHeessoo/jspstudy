@@ -16,5 +16,21 @@
     FROM MEMBER_T
   </select>
   
+  <insert id="memberAdd" parameterType="domain.MemberDto">  <!-- insert타입은 resultType이 int로 정해져 있기 때문에 적지 않음 -->
+    INSERT INTO MEMBER_T(
+        MEMBER_NO
+      , EMAIL
+      , NAME
+      , GENDER
+      , ADDRESS
+    ) VALUES (
+        MEMBER_SEQ.NEXTVAL
+      , #{email}
+      , #{name}
+      , #{gender}
+      , #{address}
+    )
+  </insert>
+  
 </mapper>
   
