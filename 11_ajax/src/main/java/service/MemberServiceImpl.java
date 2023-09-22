@@ -89,5 +89,46 @@ public class MemberServiceImpl implements MemberService {
     out.flush();
     out.close();
   }
+  
+  @Override
+  public void memberModify(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    
+    MemberDto dto = MemberDto.builder()
+        .email(request.getParameter("email"))
+        .name(request.getParameter("name"))
+        .gender(request.getParameter("gender"))
+        .address(request.getParameter("address"))
+        .memberNo(Integer.parseInt(request.getParameter("memberNo")))
+        .build();
+    
+    int modifyResult = dao.memberModify(dto);
+    
+    // 반환할 JSON Object 생성
+    JSONObject obj = new JSONObject();     // { }
+    obj.put("modifyResult", modifyResult); // {"modifyResult":1}
+    
+    PrintWriter out = response.getWriter();
+    out.println(obj.toString());
+    out.flush();
+    out.close();
+  }
+  
+  @Override
+  public void memberDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    
+    // 번호 받기
+    int memberNo = Integer.parseInt(request.getParameter("memberNo"));
+    
+    // 지우고 결과 받기
+    int deleteResult = dao.memberDelete(memberNo);  // 번호전달
+    
+    JSONObject obj = new JSONObject();      // { }
+    obj.put("deleteResult", deleteResult);  // {"deleteResult":1}
+    
+    PrintWriter out = response.getWriter();
+    out.println(obj.toString());
+    out.flush();
+    out.close();
+  }
 
 }

@@ -17,6 +17,8 @@
     fnMemberAdd();
     fnEamilCheck();
     fnMemberDetail();
+    fnMemberModify();
+    fnMemberDelete();
   })
   
   function fnMemberList() {  // 목록
@@ -56,7 +58,8 @@
     $('#email').val('');
     $('#name').val('');
     $('#none').prop('checked', true);
-    $('#address').val('');      
+    $('#address').val('');    
+    $('#msg_email').text('');
   }
   
   
@@ -115,15 +118,61 @@
         url: '${contextPath}/member/detail.do',
         data: 'email=' + $(this).data('email'),
         dataType: 'text',
-        success: function(resData) {
-          var obj = JSON.parse(resData);
+        success: function(resData) {       // resData === '{"member":{"memberNo":1,...}}'
+          var obj = JSON.parse(resData);   //     obj === {"member":{"memberNo":1,...}}
           $('#email').val(obj.member.email);
           $('#name').val(obj.member.name);
           $(':radio[name=gender][value=' + obj.member.gender + ']').prop('checked', true); // value가 일치하는 radio를 찾아서 checked 속성을 true로 함
           $('#address').val(obj.member.address);
+          $('#memberNo').val(obj.member.memberNo);
         }
       })
     })
+  }
+  
+  function fnMemberModify() {
+    $('#btn_modify').click(function() {
+      $.ajax({
+        type: 'post',
+        url: '${contextPath}/member/modify.do',
+        data: $('#frm_member').serialize(),  // 보낼 데이터
+        dataType: 'text',                    // 받아오는 타입
+        success: function(resData) {         // resData === '{"modifyResult":1}'
+          var obj = JSON.parse(resData);     //     obj === {"modifyResult":1}
+          if(obj.modifyResult == 1){
+            alert('회원 정보가 수정되었습니다.');
+            fnMemberList();  // 수정 후 목록 새로고침
+          } else {
+            alert('회원 정보 수정이 실패했습니다.');
+          }
+        }
+      })
+    })
+  }
+  
+  function fnMemberDelete() {
+    $('#btn_delete').click(function() {
+      if(!confirm('회원 정보를 삭제할까요?')){
+        return;
+      }
+      $.ajax({
+        type: 'get',
+        url: '${contextPath}/member/delete.do',
+        data: 'memberNo=' + $('#memberNo').val(),
+        dataType: 'text',
+        success: function(resData) {     // resData === '{"deleteResult":1}'
+          var obj = JSON.parse(resData); //     obj === {"deleteResult":1}
+          if(obj.deleteResult == 1){
+            alert('회원 정보가 삭제되었습니다.');
+            fnMemberList();  // 삭제 후 목록 새로고침
+            fnInitDetail();  // 입력란 초기화
+          } else {
+            alert('회원 정보 삭제가 실패했습니다.');
+          }
+        }
+      })
+    })
+    
   }
   
 </script>
@@ -155,6 +204,7 @@
         <input type="text" name="address" id="address">
       </div>
       <div>
+        <input type="hidden" name="memberNo" id="memberNo">
         <button type="button" id="btn_init">입력초기화</button>  <!-- 서브밋은 ajax에서 사용X -->
         <button type="button" id="btn_add">회원신규등록</button>
         <button type="button" id="btn_modify">회원정보수정</button>

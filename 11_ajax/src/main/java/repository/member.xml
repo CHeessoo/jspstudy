@@ -38,5 +38,20 @@
      WHERE EMAIL = #{email}
   </select>
   
+  <update id="memberModify" parameterType="domain.MemberDto">
+    UPDATE MEMBER_T
+       SET EMAIL = #{email}
+         , NAME = #{name}
+         , GENDER = #{gender}
+         , ADDRESS = #{address}
+     WHERE MEMBER_NO = #{memberNo}
+  </update>
+  
+  <delete id="memberDelete" parameterType="int">
+    DELETE
+      FROM MEMBER_T
+     WHERE MEMBER_NO = #{memberNo}
+  </delete>
+  
 </mapper>
   

@@ -11,4 +11,6 @@ public interface MemberService {
   public void memberAdd(HttpServletRequest request, HttpServletResponse response) throws IOException;
   public void memberEmailCheck(HttpServletRequest request, HttpServletResponse response) throws IOException;
   public void memberDetail(HttpServletRequest request, HttpServletResponse response) throws IOException;
+  public void memberModify(HttpServletRequest request, HttpServletResponse response) throws IOException;
+  public void memberDelete(HttpServletRequest request, HttpServletResponse response) throws IOException;
 }
