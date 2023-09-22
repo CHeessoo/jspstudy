@@ -31,6 +31,27 @@
       $('#chk_all').prop('checked', total === $('.chk_each').length);
     })
   }
+  
+  function fnArticleDelete() {
+    
+    if(!confirm('선택한 기사를 삭제할까요?')){
+      return;  // 취소 버튼 누를 시 아래 코드 실행 안 함
+    }
+    
+    let array = [];  // 비어있는 배열 생성
+    
+    // $.each(배열, function(인덱스, 요소){})    
+    $.each($('.chk_each'), function(i, elem) {
+      if($(elem).is(':checked')){
+        array.push($(elem).val()); // 체크된 요소의 번호(value)만 배열(array)에 모음 (push : 배열에 추가하는 자바스크립트 함수)
+      }
+    })
+    
+    location.href = '${contextPath}/deleteArticle.do?articles=' + array.join(',');   
+    // join을 사용해서 배열안에 요소를 꺼내서 컴마(,)로 연결
+    // array           === ['1', '2', '3']
+    // array.join(',') === '1,2,3' 
+  }
 
 </script>
 </head>
@@ -38,6 +59,7 @@
 
   <div>
     <a href="${contextPath}/writeArticle.do">기사작성하러가기</a>
+    <a href="javascript:fnArticleDelete()">선택기사삭제하기</a> <!-- javascript: , 해당 a링크를 클릭하면 함수를 호출 (클릭이벤트 없이 직접 연결) -->
   </div>
 
   <hr>

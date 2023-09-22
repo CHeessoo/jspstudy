@@ -11,4 +11,5 @@ public interface ArticleService {
   public ActionForward edit(HttpServletRequest request);
   public ActionForward modify(HttpServletRequest request);
   public ActionForward plusHit(HttpServletRequest request);
+  public ActionForward delete(HttpServletRequest request);
 }

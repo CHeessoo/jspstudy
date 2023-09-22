@@ -229,5 +229,30 @@ public class ArticleDao {
     return plusHit;
   }
   
+  // 기사 삭제 메소드
+  public int articleDelete(String articles) {
+    
+    // 삭제 결과
+    int deleteResult = 0;
+    
+    try {
+      
+      con = dataSource.getConnection();
+      // ?로 변수처리하면 String이 돼서 숫자 전달이 되지 않음 (물음표를 사용하지 않는건 안 좋은 처리)
+      // ? 처리하는 이유는 보안 때문이다.
+      String sql = "DELETE FROM ARTICLE_T WHERE ARTICLE_NO IN(" + articles + ")";
+      ps = con.prepareStatement(sql);
+      deleteResult = ps.executeUpdate();
+      
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      close();
+    }
+    
+    // 결과 반환
+    return deleteResult;
+  }
+  
   
 }

@@ -66,6 +66,9 @@ public class ArticleController extends HttpServlet {
     case "/plusHit.do":
       af = articleService.plusHit(request);
       break;
+    case "/deleteArticle.do":
+      af = articleService.delete(request);
+      break;
     }
     
     // 이동

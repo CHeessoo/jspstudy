@@ -138,5 +138,24 @@ public class ArticleServiceImpl implements ArticleService {
     return new ActionForward(path, true);
   }
   
+  @Override
+  public ActionForward delete(HttpServletRequest request) {
+
+    String articles = request.getParameter("articles");
+    
+    int deleteResult = dao.articleDelete(articles);
+    
+    String path = null;
+    
+    if(deleteResult > 0) {  // if(deleteResult == articles.split(",").length   정확하게 구하고 싶다면 배열로 바꿔서 길이를 구하는 방법도 있음
+      path = request.getContextPath() + "/getArticleList.do";
+    } else {
+      path = request.getContextPath() + "/index.do";
+    }
+    
+    
+    return new ActionForward(path, true);
+  }
+  
 
 }
