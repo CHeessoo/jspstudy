@@ -54,6 +54,13 @@ public class MemberDao {
     return addResult;
   }
   
+  public MemberDto getMemberByEmail(String email) {
+    SqlSession ss = factory.openSession();  // select문의 openSession은 false를 전달 x
+    MemberDto dto = ss.selectOne(NS + "getMemberByEmail", email);
+    ss.close();
+    return dto;
+  }
+  
   
 
 }

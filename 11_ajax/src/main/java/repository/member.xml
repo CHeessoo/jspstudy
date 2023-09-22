@@ -32,5 +32,11 @@
     )
   </insert>
   
+  <select id="getMemberByEmail" parameterType="String" resultType="domain.MemberDto">
+    SELECT MEMBER_NO, EMAIL, NAME, GENDER, ADDRESS
+      FROM MEMBER_T
+     WHERE EMAIL = #{email}
+  </select>
+  
 </mapper>
   

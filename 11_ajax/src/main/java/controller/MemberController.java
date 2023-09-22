@@ -34,6 +34,12 @@ public class MemberController extends HttpServlet {
     case "/member/list.do":
       memberService.getMemberList(response);  // 모든 서비스가 직접 ajax으로 응답하기 때문에 반환 필요 X (redirect, forward 없음)
       break; 
+    case "/member/add.do":
+      memberService.memberAdd(request, response);
+      break;
+    case "/member/emailCheck.do":
+      memberService.memberEmailCheck(request, response);
+      break;
     }
     
 	  
