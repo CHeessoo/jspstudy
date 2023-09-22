@@ -3,9 +3,18 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="repository.member">  <!-- mapper가 있는 구조적 위치 -->
+<mapper namespace="repository.member">  <!-- namespace : mapper가 있는 구조적 위치 -->
 
-
+  <select id="memberList" resultType="domain.MemberDto">
+    SELECT MEMBER_NO, EMAIL, NAME, GENDER, ADDRESS
+      FROM MEMBER_T
+     ORDER BY MEMBER_NO DESC
+  </select>
+  
+  <select id="memberCount" resultType="int">
+  SELECT COUNT(*)
+    FROM MEMBER_T
+  </select>
   
 </mapper>
   
