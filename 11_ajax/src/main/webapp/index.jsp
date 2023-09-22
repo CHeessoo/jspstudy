@@ -14,6 +14,8 @@
   $(function() {
     fnMemberList();
     fnInit();
+    // 초기상태를위해 fnInitDetail()호출
+    fnInitDetail();
     fnMemberAdd();
     fnEamilCheck();
     fnMemberDetail();
@@ -60,6 +62,12 @@
     $('#none').prop('checked', true);
     $('#address').val('');    
     $('#msg_email').text('');
+    
+    // 입력 초기화를 클릭하면 신규등록버튼 활성화
+    //                        수정,삭제버튼 비활성화
+    $('#btn_add').prop('disabled', false); 
+    $('#btn_modify').prop('disabled', true);
+    $('#btn_delete').prop('disabled', true);
   }
   
   
@@ -90,6 +98,7 @@
   }
   
   var ableEmail = false;
+  var myEmail = '';
   
   function fnEamilCheck() {  
     $('#email').keyup(function() {  // 이메일 입력란에 입력할 때 마다 중복검사
@@ -100,7 +109,10 @@
         dataType: 'text',
         success: function(resData) {     // resData === '{"ableEmail":true}'
           var obj = JSON.parse(resData); //     obj === {"ableEmail":true}
-          ableEmail = obj.ableEmail;
+          
+          // myEmail === $('#email').val() 조건은 입력된 이메일이 원래 자신의 email과 같음을 의미한다.
+          ableEmail = obj.ableEmail || myEmail === $('#email').val();
+          
           if(obj.ableEmail){
             $('#msg_email').text('');
           } else {
@@ -111,6 +123,7 @@
     })
   }
   
+  
   function fnMemberDetail() {
     $(document).on('click', '.btn_detail', function() { // 등록이벤트로 만들어진 상세조회 버튼들은 바로 이벤트 적용이 되지 않으므로 클릭이벤트를 적용하는 방법
       $.ajax({
@@ -120,18 +133,37 @@
         dataType: 'text',
         success: function(resData) {       // resData === '{"member":{"memberNo":1,...}}'
           var obj = JSON.parse(resData);   //     obj === {"member":{"memberNo":1,...}}
+          
+          // 상세보기하면 해당 회원의 email이 myEmail에 저장된다.
+          myEmail = obj.member.email;
+            
           $('#email').val(obj.member.email);
           $('#name').val(obj.member.name);
           $(':radio[name=gender][value=' + obj.member.gender + ']').prop('checked', true); // value가 일치하는 radio를 찾아서 checked 속성을 true로 함
           $('#address').val(obj.member.address);
           $('#memberNo').val(obj.member.memberNo);
+          
+          // 회원 조회를 클릭하면 신규등록버튼 비활성화
+          //                      수정,삭제버튼 활성화
+          $('#btn_add').prop('disabled', true);  
+          $('#btn_modify').prop('disabled', false);
+          $('#btn_delete').prop('disabled', false);
+          
+          // ableEmail 상태 갱신을 위해 email의 keyup 이벤트 강제 실행
+          $('#email').trigger('keyup');
         }
       })
     })
   }
   
   function fnMemberModify() {
+    // 다른 사람이 쓰는 이메일로 수정 불가능
     $('#btn_modify').click(function() {
+      if(!ableEmail){
+        alert('등록할 수 없는 이메일입니다.');
+        $('#email').focus();
+        return;
+      }
       $.ajax({
         type: 'post',
         url: '${contextPath}/member/modify.do',
