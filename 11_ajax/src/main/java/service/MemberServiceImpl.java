@@ -73,5 +73,21 @@ public class MemberServiceImpl implements MemberService {
     out.close();
     
   }
+  
+  @Override
+  public void memberDetail(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    
+    String email = request.getParameter("email");
+    
+    MemberDto dto = dao.getMemberByEmail(email);
+    
+    JSONObject obj = new JSONObject();      // { }
+    obj.put("member", new JSONObject(dto)); // {"member":{"memberNo":1,...}}
+    
+    PrintWriter out = response.getWriter();
+    out.println(obj.toString());
+    out.flush();
+    out.close();
+  }
 
 }

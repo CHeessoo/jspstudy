@@ -16,9 +16,10 @@
     fnInit();
     fnMemberAdd();
     fnEamilCheck();
+    fnMemberDetail();
   })
   
-  function fnMemberList() {
+  function fnMemberList() {  // 목록
     $.ajax({
       type: 'get',
       url: '${contextPath}/member/list.do',
@@ -39,7 +40,7 @@
             str += '<td>' + elem.name + '</td>';
             str += '<td>' + (elem.gender === 'man' ? '남자' : (elem.gender === 'woman' ? '여자' : '선택안함')) + '</td>';
             str += '<td>' + elem.address + '</td>';
-            str += '<td><button>조회</button></td>';
+            str += '<td><button class="btn_detail" data-email="' + elem.email + '">조회</button></td>';
             str += '</tr>';
             memberList.append(str);
           })
@@ -98,15 +99,32 @@
           var obj = JSON.parse(resData); //     obj === {"ableEmail":true}
           ableEmail = obj.ableEmail;
           if(obj.ableEmail){
-            $('#msg_email').val('');
+            $('#msg_email').text('');
           } else {
-            $('msg_email').val('이미 등록된 이메일입니다.');
+            $('#msg_email').text('이미 등록된 이메일입니다.');
           }
         }
       })
     })
   }
   
+  function fnMemberDetail() {
+    $(document).on('click', '.btn_detail', function() { // 등록이벤트로 만들어진 상세조회 버튼들은 바로 이벤트 적용이 되지 않으므로 클릭이벤트를 적용하는 방법
+      $.ajax({
+        type: 'get',
+        url: '${contextPath}/member/detail.do',
+        data: 'email=' + $(this).data('email'),
+        dataType: 'text',
+        success: function(resData) {
+          var obj = JSON.parse(resData);
+          $('#email').val(obj.member.email);
+          $('#name').val(obj.member.name);
+          $(':radio[name=gender][value=' + obj.member.gender + ']').prop('checked', true); // value가 일치하는 radio를 찾아서 checked 속성을 true로 함
+          $('#address').val(obj.member.address);
+        }
+      })
+    })
+  }
   
 </script>
 </head>
@@ -127,12 +145,8 @@
       <div>
         <input type="radio" name="gender" id="man" value="man">
         <label for="man">남자</label>
-      </div>
-      <div>
         <input type="radio" name="gender" id="woman" value="woman">
         <label for="woman">여자</label>
-      </div>
-      <div>
         <input type="radio" name="gender" id="none" value="none" checked>
         <label for="none">선택안함</label>
       </div>
