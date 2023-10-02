@@ -15,7 +15,7 @@
 <body>
 
   <div>
-    <a href="${contextPath}/student/"
+    <a href="${contextPath}/student/list.do">학생관리</a>
   </div>
 
 </body>

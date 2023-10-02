@@ -17,12 +17,12 @@ public class BookDao {
   private SqlSessionFactory factory;
   
   // Singleton Pattern
-  private static BookDao dao = new BookDao();  // BookDao타입의 dao 생성 (2교시 수업 듣고 주석 다시 정리)
-  private BookDao () {            // 생성자 호출, 외부에서 BookDao를 건들지 못하게 처리
+  private static BookDao dao = new BookDao();  // BookDao타입의 dao 생성 
+  private BookDao () {            // 생성자 호출, 외부에서 BookDao를 호출할 수 없게 처리
     // SqlSessionFactory 생성
     try {
       String resource = "mybatis/config/mybatis-config.xml";
-      InputStream in = Resources.getResourceAsStream(resource);  // mybatis에 ㅇ
+      InputStream in = Resources.getResourceAsStream(resource);  // Resources : mybatis에서 제공하는 클래스로 xml을 읽는 방법
       factory = new SqlSessionFactoryBuilder().build(in);
     } catch (Exception e) {
       e.printStackTrace();

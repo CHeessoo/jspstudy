@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class PageVo {
-  
+
   private int page;     // 현재 페이지 번호(요청 파라미터로 받는다.)
   private int total;    // 전체 항목의 개수(DB에서 구한 뒤 받는다.)
   private int display;  // 한 페이지에 표시할 항목의 개수(요청 파라미터로 받는다.)
@@ -30,29 +30,29 @@ public class PageVo {
     // 계산한 정보 저장
     begin = (page - 1) * display + 1;
     end = begin + display - 1;
-    if(end > total) {  // end값 보정
+    if(end > total) {
       end = total;
     }
     
     /* 전체 페이지를 나타낼 때 필요한 정보 */
     
     // 전체 페이지 계산
-    totalPage = (int)Math.ceil((double)total / display);  // 소수점 뒷자리는 올림처리 후 정수 변환
+    totalPage = (int)Math.ceil((double)total / display);
     
     // 각 블록의 시작 페이지와 종료 페이지 계산
     beginPage = ((page - 1) / pagePerBlock) * pagePerBlock + 1;
     endPage = beginPage + pagePerBlock - 1;
-    if(endPage > totalPage) {  // endPage값 보정
+    if(endPage > totalPage) {
       endPage = totalPage;
     }
-
+    
   }
-
+  
   public String getPaging(String url) {
     
     StringBuilder sb = new StringBuilder();
     
-    sb. append("<div>");
+    sb.append("<div>");
     
     // 이전 블록
     if(beginPage == 1) {
@@ -64,9 +64,9 @@ public class PageVo {
     // 페이지 번호
     for(int p = beginPage; p <= endPage; p++) {
       if(p == page) {
-        sb.append("<span>" + p + "</sapn>");
+        sb.append("<span>" + p + "</span>");
       } else {
-        sb.append("<a href=\"" + url + "?page=" + p + "\">" + p + "</a>");        
+        sb.append("<a href=\"" + url + "?page=" + p + "\">" + p + "</a>");
       }
     }
     
@@ -77,9 +77,10 @@ public class PageVo {
       sb.append("<a href=\"" + url + "?page=" + (endPage + 1) + "\">다음</a>");
     }
     
-    sb. append("</div>");
+    sb.append("</div>");
     
     return sb.toString();
+    
   }
   
 }
