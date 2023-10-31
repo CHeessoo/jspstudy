@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mybatis.mapper.student">
+
+  <!-- 1. 목록 -->
+  <select id="studentList" resultType="domain.StudentDto">
+    SELECT STU_NO, NAME, KOR, ENG, MATH, AVE, GRADE
+      FROM STUDENT_T
+     ORDER BY STU_NO
+  </select>
+  
+  <!-- 2. 전체 학생 수 -->
+  <select id="studentCount" resultType="int">
+    SELECT COUNT(*)
+      FROM STUDENT_T
+  </select>
+  
+  <!-- 3. 전체 점수 평균 -->
+  <select id="studentAverage" resultType="double">
+    SELECT NVL(AVG(AVE), 0)
+      FROM STUDENT_T
+  </select>
+  
+  <!-- 4. 삽입 -->
+  <insert id="studentAdd" parameterType="domain.StudentDto">
+    INSERT INTO STUDENT_T (
+        STU_NO
+      , NAME
+      , KOR
+      , ENG
+      , MATH
+      , AVE
+      , GRADE
+    ) VALUES (
+        STUDENT_SEQ.NEXTVAL
+      , #{name}
+      , #{kor}
+      , #{eng}
+      , #{math}
+      , (#{kor} + #{eng} + #{math}) / 3
+      , CASE
+          WHEN (#{kor} + #{eng} + #{math}) / 3 >= 90 THEN 'A'
+          WHEN (#{kor} + #{eng} + #{math}) / 3 >= 80 THEN 'B'
+          WHEN (#{kor} + #{eng} + #{math}) / 3 >= 70 THEN 'C'
+          WHEN (#{kor} + #{eng} + #{math}) / 3 >= 60 THEN 'D'
+          ELSE 'F'
+        END
+     )
+  </insert>
+  
+  <!-- 5. 학생 조회 -->
+  <select id="queryStudentList" parameterType="Map" resultType="domain.StudentDto">
+    SELECT STU_NO, NAME, KOR, ENG, MATH, AVE, GRADE
+      FROM STUDENT_T
+     WHERE AVE BETWEEN #{begin} AND #{end}
+  </select>
+  
+  <!-- 6. 조회된 학생 수 -->
+  <select id="queryStudentCount" parameterType="Map" resultType="int">
+    SELECT COUNT(*)
+      FROM STUDENT_T
+     WHERE AVE BETWEEN #{begin} AND #{end}
+  </select>
+  
+  <!-- 7. 조회된 학생 점수 평균 -->
+  <select id="queryStudentAverage" parameterType="Map" resultType="double">
+    SELECT NVL(AVG(AVE), 0)
+      FROM STUDENT_T
+     WHERE AVE BETWEEN #{begin} AND #{end}
+  </select>
+  
+  <!-- 8. 삭제 -->
+  <delete id="studentDelete" parameterType="int">
+    DELETE
+      FROM STUDENT_T
+     WHERE STU_NO = #{stuNo}
+  </delete>
+  
+  <!-- 9. 상세 -->
+  <select id="studentDetail" parameterType="int" resultType="domain.StudentDto">
+    SELECT STU_NO, NAME, KOR, ENG, MATH, AVE, GRADE
+      FROM STUDENT_T
+     WHERE STU_NO = #{stuNo}
+  </select>
+  
+  <!-- 10. 수정 -->
+  <update id="studentModify" parameterType="domain.StudentDto">
+    UPDATE STUDENT_T
+       SET NAME = #{name}
+         , KOR = #{kor}
+         , ENG = #{eng}
+         , MATH = #{math}
+         , AVE = (#{kor} + #{eng} + #{math}) / 3
+         , GRADE = 
+            (CASE
+               WHEN (#{kor} + #{eng} + #{math}) / 3 >= 90 THEN 'A'
+               WHEN (#{kor} + #{eng} + #{math}) / 3 >= 80 THEN 'B'
+               WHEN (#{kor} + #{eng} + #{math}) / 3 >= 70 THEN 'C'
+               WHEN (#{kor} + #{eng} + #{math}) / 3 >= 60 THEN 'D'
+               ELSE 'F'
+             END)
+     WHERE STU_NO = #{stuNo}
+  </update>
+  
+  <!-- 11. TOP3 -->
+  <select id="top3List" resultType="domain.StudentDto">
+    <![CDATA[
+    SELECT A.RK, A.STU_NO, A.NAME, A.KOR, A.ENG, A.MATH, A.AVE, A.GRADE
+      FROM (SELECT STU_NO, NAME, KOR, ENG, MATH, AVE, GRADE, RANK() OVER(ORDER BY AVE DESC) AS RK
+              FROM STUDENT_T) A
+     WHERE A.RK <= 3
+    ]]>
+  </select>
+  
+</mapper>
